@@ -19,7 +19,7 @@ public class inlämning2Test {
     MembershipMethods t = new MembershipMethods();
     List<GymClient> pl = t.createListOfClients();
 
-    @Test
+    @Test  //Testar att personerna ligger i rätt ordning.
     public void createListOfClientsTest(){
         Assert.assertEquals(pl.get(3).getName().trim(), "Diamanda Djedi");
         assert (pl.get(3).getName().trim().equals("Diamanda Djedi"));
@@ -28,7 +28,7 @@ public class inlämning2Test {
         assertFalse (pl.get(6).getPersonNumber() == 8512021234L);
     }
 
-    @Test
+    @Test //Testar om medlemskapet är aktivt.
     public void checkMembershipDateTest(){
         Assert.assertTrue(t.checkMembershipDate(true ,pl.get(0).getMembershipDate()));
         Assert.assertFalse(t.checkMembershipDate(true, pl.get(12).getMembershipDate()));
@@ -41,7 +41,7 @@ public class inlämning2Test {
         t.lastTrained(false, pl.get(1));
     }
 
-    @Test
+    @Test   //Testar så att inte vem som helst är medlem.
     public void personIsMemberTest(){
         assert (t.personIsMember(pl, "Alhambra Aromes"));
         assert (t.personIsMember(pl, "7703021234"));
@@ -49,7 +49,7 @@ public class inlämning2Test {
         assert (!t.personIsMember(pl, "5711121234"));
     }
 
-    @Test
+    @Test //Testar så att namn inte innehåller siffror och personnummer inte innehåller bokstäver.
     public void checkNameNumberValidTest(){
         assert (t.checkNameValid("Kalle Kalle "));
         assert (t.checkNumberValid("564456456"));
@@ -57,7 +57,7 @@ public class inlämning2Test {
         assert (!t.checkNumberValid("123123awda"));
     }
 
-    @Test
+    @Test   //Läser in utskrift och jämför så den är rätt.
     public void printerTest(){
         Path readPath = Paths.get("src/sprint2/inlämning2/träningsschema.txt");
 
@@ -75,13 +75,13 @@ public class inlämning2Test {
         }
     }
 
-    @Test
+    @Test   //Testar att fel namn inte finns på listan.
     public void personIsOnListTest(){
         assert (!t.personIsOldMember(pl, "Björne"));
         assert (!t.personIsOldMember(pl, "546456456"));
     }
 
-    @Test
+    @Test   //Matar in random personer från listan och kollar om de är medlemmar eller inte.
     public void loopTest(){
         String input = "";
         int counter = 0;
@@ -95,6 +95,5 @@ public class inlämning2Test {
             else assert (!t.loopTest(input));
             counter++;
         }
-
     }
 }
