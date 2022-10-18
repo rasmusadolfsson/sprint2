@@ -1,5 +1,6 @@
 package sprint2.inlämning2;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -46,9 +47,9 @@ public class MembershipMethods {
         if(nameIsValid && !numberIsValid){
             for (GymClient gymClient: inputList) {
                 if (gymClient.getName().trim().equals(inputString)) {
-                    isMember = checkMembershipDate(gymClient.getMembershipDate());
+                    isMember = checkMembershipDate(false, gymClient.getMembershipDate());
                     if(isMember){
-                        lastTrained(gymClient);
+                        lastTrained(true, gymClient);
                     }
                 }
             }
@@ -57,9 +58,9 @@ public class MembershipMethods {
             long temp = Long.parseLong(inputString);
             for(GymClient gymClient: inputList){
                 if(temp == gymClient.getPersonNumber()){
-                    isMember = checkMembershipDate(gymClient.getMembershipDate());
+                    isMember = checkMembershipDate(false, gymClient.getMembershipDate());
                     if(isMember){
-                        lastTrained(gymClient);
+                        lastTrained(true, gymClient);
                     }
                 }
             }
@@ -92,7 +93,10 @@ public class MembershipMethods {
         return isOldMember;
     }
 
-    public void lastTrained(GymClient inputClient){
+    public void lastTrained(boolean booloeanNotTest, GymClient inputClient){
+        boolean testIsNotRunning = true;
+        testIsNotRunning = booloeanNotTest;
+
         Path writePath = Paths.get("src/sprint2/inlämning2/träningsschema.txt");
         LocalDate date1 = LocalDate.now();
         String date2 =  date1.toString();
@@ -106,7 +110,7 @@ public class MembershipMethods {
             }
         }
 
-        try(BufferedWriter bw = new BufferedWriter(new FileWriter(writePath.toFile(), true))){
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(writePath.toFile(), testIsNotRunning))){
             String line1 = inputClient.getPersonNumber() + ", " + inputClient.name;
             bw.write(line1);
             bw.write(", ");
@@ -119,11 +123,12 @@ public class MembershipMethods {
     }
 
 
-    public boolean checkMembershipDate(String input){
+    public boolean checkMembershipDate(boolean testBoolean, String input){
         boolean testIsRunning = false;
+        testIsRunning = testBoolean;
         LocalDate dateToday;
-        if(true){
-            dateToday = LocalDate.of(2022, 10, 18);
+        if(testIsRunning){
+            dateToday = LocalDate.of(2022, 10, 17);
         }
         else  dateToday = LocalDate.now();
 
@@ -153,5 +158,16 @@ public class MembershipMethods {
             }
         }
         return isValid;
+    }
+
+
+    public boolean loopTest(String input){
+        if(personIsMember(createListOfClients(), input)){
+            return true;
+        }
+        else if(personIsOldMember(createListOfClients(), input)){
+            return false;
+        }
+        else return false;
     }
 }

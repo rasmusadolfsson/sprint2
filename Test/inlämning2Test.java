@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static org.testng.AssertJUnit.assertFalse;
 
@@ -29,15 +30,15 @@ public class inlämning2Test {
 
     @Test
     public void checkMembershipDateTest(){
-        Assert.assertTrue(t.checkMembershipDate(pl.get(0).getMembershipDate()));
-        Assert.assertFalse(t.checkMembershipDate(pl.get(12).getMembershipDate()));
-        Assert.assertTrue(t.checkMembershipDate(pl.get(3).getMembershipDate()));
-        Assert.assertFalse(t.checkMembershipDate(pl.get(5).getMembershipDate()));
+        Assert.assertTrue(t.checkMembershipDate(true ,pl.get(0).getMembershipDate()));
+        Assert.assertFalse(t.checkMembershipDate(true, pl.get(12).getMembershipDate()));
+        Assert.assertTrue(t.checkMembershipDate(true, pl.get(3).getMembershipDate()));
+        Assert.assertFalse(t.checkMembershipDate(true, pl.get(5).getMembershipDate()));
     }
 
     @Test
     public void lastTrainedWriterTest(){
-        t.lastTrained(pl.get(1));
+        t.lastTrained(false, pl.get(1));
     }
 
     @Test
@@ -60,7 +61,7 @@ public class inlämning2Test {
     public void printerTest(){
         Path readPath = Paths.get("src/sprint2/inlämning2/träningsschema.txt");
 
-        t.lastTrained(pl.get(0));
+        t.lastTrained(false, pl.get(0));
         String output = pl.get(0).getPersonNumber()+", "+pl.get(0).getName()+", "+LocalDate.now();
 
         try(BufferedReader br = Files.newBufferedReader(readPath)){
@@ -72,12 +73,28 @@ public class inlämning2Test {
         } catch (IOException e) {
             System.out.println("IOException");
         }
-
     }
 
     @Test
     public void personIsOnListTest(){
         assert (!t.personIsOldMember(pl, "Björne"));
         assert (!t.personIsOldMember(pl, "546456456"));
+    }
+
+    @Test
+    public void loopTest(){
+        String input = "";
+        int counter = 0;
+        int randomNum = 0;
+        while(counter < 200){
+            randomNum = ThreadLocalRandom.current().nextInt(0, pl.size());
+            input = pl.get(randomNum).getName();
+            if(randomNum == 0 ||randomNum == 3 ||randomNum == 4 ||randomNum == 6 ||randomNum == 13){
+                assert (t.loopTest(input));
+            }
+            else assert (!t.loopTest(input));
+            counter++;
+        }
+
     }
 }
