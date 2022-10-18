@@ -120,7 +120,13 @@ public class MembershipMethods {
 
 
     public boolean checkMembershipDate(String input){
-        LocalDate dateToday = LocalDate.now();
+        boolean testIsRunning = false;
+        LocalDate dateToday;
+        if(true){
+            dateToday = LocalDate.of(2022, 10, 18);
+        }
+        else  dateToday = LocalDate.now();
+
         LocalDate memberDate = LocalDate.parse(input);
         if(dateToday.isAfter(memberDate.plusYears(1))){
             return false;

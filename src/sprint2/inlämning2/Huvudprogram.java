@@ -1,6 +1,7 @@
 package sprint2.inlämning2;
 
 import javax.swing.*;
+import java.time.LocalDate;
 
 public class Huvudprogram {
 
@@ -10,7 +11,7 @@ public class Huvudprogram {
         String input = JOptionPane.showInputDialog("Skriv in namn eller personnummer: ");
 
         if(t.personIsMember(t.createListOfClients(), input)){
-            JOptionPane.showMessageDialog(null, "Välkommen in!");
+            JOptionPane.showMessageDialog(null, "Du är medlem!");
         }
         else if(t.personIsOldMember(t.createListOfClients(), input)){
             JOptionPane.showMessageDialog(null, "Ditt medlemskap har gått ut!");

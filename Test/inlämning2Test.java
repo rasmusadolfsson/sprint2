@@ -3,8 +3,13 @@ import org.testng.annotations.Test;
 import sprint2.inlämning2.GymClient;
 import sprint2.inlämning2.MembershipMethods;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Random;
 
 import static org.testng.AssertJUnit.assertFalse;
 
@@ -12,8 +17,6 @@ public class inlämning2Test {
 
     MembershipMethods t = new MembershipMethods();
     List<GymClient> pl = t.createListOfClients();
-    Random r = new Random();
-
 
     @Test
     public void createListOfClientsTest(){
@@ -45,12 +48,36 @@ public class inlämning2Test {
         assert (!t.personIsMember(pl, "5711121234"));
     }
 
-
     @Test
     public void checkNameNumberValidTest(){
         assert (t.checkNameValid("Kalle Kalle "));
         assert (t.checkNumberValid("564456456"));
         assert (!t.checkNameValid("Micke55"));
         assert (!t.checkNumberValid("123123awda"));
+    }
+
+    @Test
+    public void printerTest(){
+        Path readPath = Paths.get("src/sprint2/inlämning2/träningsschema.txt");
+
+        t.lastTrained(pl.get(0));
+        String output = pl.get(0).getPersonNumber()+", "+pl.get(0).getName()+", "+LocalDate.now();
+
+        try(BufferedReader br = Files.newBufferedReader(readPath)){
+            String compare = br.readLine();
+            System.out.println(output);
+            System.out.println(compare);
+            assert (output.equals(compare));
+
+        } catch (IOException e) {
+            System.out.println("IOException");
+        }
+
+    }
+
+    @Test
+    public void personIsOnListTest(){
+        assert (!t.personIsOldMember(pl, "Björne"));
+        assert (!t.personIsOldMember(pl, "546456456"));
     }
 }
